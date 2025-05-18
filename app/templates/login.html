@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="utf-8" />
+    <title>Snackster • Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="card">
+      <h1>Snackster</h1>
+      {% if error %}<p style="color:#ff5d5d">{{ error }}</p>{% endif %}
+      <form method="post">
+        <label>
+          Brugernavn
+          <input type="text" name="username" required />
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" required />
+        </label>
+        <button type="submit" class="btn-login">Login / Registrér</button>
+      </form>
+    </div>
+  </body>
+</html>

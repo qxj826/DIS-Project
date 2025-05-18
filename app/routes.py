@@ -1,31 +1,75 @@
-from flask import Blueprint, jsonify, request
-from .models import db, User, WorkoutSession, Recommendation
+from flask import Blueprint, render_template, request, redirect, url_for, session
+from .models import db, User, WorkoutSession, Recommendation, Snack
 from .recommendations import recommend_snacks
+from datetime import datetime
 
 bp = Blueprint("main", __name__)
 
-@bp.route("/")
-def index():
-    return {"msg": "Snackster API online 🚀"}
+# ---------- LOGIN ----------
+@bp.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        uname = request.form["username"].strip().lower()
+        pwd = request.form["password"]
 
-@bp.route("/recommend", methods=["POST"])
-def recommend():
-    data = request.json
-    user = User.query.get_or_404(data["user_id"])
+        user = User.query.filter_by(username=uname).first()
 
-    session = WorkoutSession(
-        calories_burned=data["calories_burned"],
-        activity_type=data.get("activity_type"),
-        user=user,
-    )
-    db.session.add(session)
-    db.session.commit()
+        if user is None:
+            # registrér ny bruger
+            user = User(username=uname)
+            user.set_password(pwd)
+            db.session.add(user)
+            db.session.commit()
+        elif not user.check_password(pwd):
+            return render_template("login.html", error="Forkert password")
 
-    snacks = recommend_snacks(session, user)
-    for snack in snacks:
-        db.session.add(
-            Recommendation(user_id=user.id, session_id=session.id, snack_id=snack.id)
+        # log ind → gem id i session
+        session["user_id"] = user.id
+        return redirect(url_for("main.dashboard"))
+
+    return render_template("login.html")
+
+
+# ---------- LOGOUT ----------
+@bp.route("/logout")
+def logout():
+    session.pop("user_id", None)
+    return redirect(url_for("main.login"))
+
+
+def _current_user():
+    uid = session.get("user_id")
+    return User.query.get(uid) if uid else None
+
+
+# ---------- DASHBOARD ----------
+@bp.route("/dashboard", methods=["GET", "POST"])
+def dashboard():
+    user = _current_user()
+    if not user:
+        return redirect(url_for("main.login"))
+
+    if request.method == "POST":
+        calories = int(request.form["calories"])
+
+        # registrér workout (uden activity-type her)
+        session_row = WorkoutSession(
+            date=datetime.utcnow(),
+            calories_burned=calories,
+            user=user,
         )
-    db.session.commit()
+        db.session.add(session_row)
+        db.session.commit()
 
-    return jsonify([{"name": s.name, "calories": s.calories} for s in snacks])
+        snacks = recommend_snacks(session_row, user)
+
+        # gem anbefalinger i DB
+        for s in snacks:
+            db.session.add(
+                Recommendation(user_id=user.id, session_id=session_row.id, snack_id=s.id)
+            )
+        db.session.commit()
+
+        return render_template("dashboard.html", user=user, snacks=snacks)
+
+    return render_template("dashboard.html", user=user)

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="da">
+  <head>
+    <meta charset="utf-8" />
+    <title>Snackster • Dine snacks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <div class="card">
+      <h2>Hej {{ user.username }}!</h2>
+      <form method="post">
+        <label>
+          Indtast kalorier forbrændt:
+          <input type="number" name="calories" min="1" required />
+        </label>
+        <button type="submit" class="btn-action">Vis snacks</button>
+      </form>
+
+      {% if snacks is defined %}
+        <h3>Forslag:</h3>
+        <ul class="snack-list">
+          {% for s in snacks %}
+            <li>{{ s.name }} – {{ s.calories }} kcal</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <p style="text-align:center; margin-top:2rem">
+        <a href="{{ url_for('main.logout') }}" style="color:#bbb">Log ud</a>
+      </p>
+    </div>
+
+    <script src="{{ url_for('static', filename='snacks.js') }}"></script>
+  </body>
+</html>

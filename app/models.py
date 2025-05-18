@@ -1,11 +1,24 @@
-from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
+from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    deficit_goal = db.Column(db.Integer)          # calories
+
+    # NYT felt + metoder  ↓↓↓
+    password_hash = db.Column(db.String(256), nullable=False)
+
+    deficit_goal = db.Column(db.Integer)
     workouts = db.relationship("WorkoutSession", backref="user")
+
+    # ---------- helpers ----------
+    def set_password(self, pwd: str) -> None:
+        self.password_hash = generate_password_hash(pwd)
+
+    def check_password(self, pwd: str) -> bool:
+        return check_password_hash(self.password_hash, pwd)
+
 
 class WorkoutSession(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -14,6 +27,8 @@ class WorkoutSession(db.Model):
     activity_type = db.Column(db.String(80))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     recommendations = db.relationship("Recommendation", backref="session")
+
+# … de øvrige modeller er uændrede …
 
 class Snack(db.Model):
     id = db.Column(db.Integer, primary_key=True)

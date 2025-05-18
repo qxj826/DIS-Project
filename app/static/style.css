@@ -1,0 +1,109 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+:root {
+  --bg-dark: #000;
+  --card: #121212;
+  --purple: #4c2a86;
+  --purple-hover: #6b3fd8;
+  --orange: #ff7f11;
+  --orange-hover: #ffa149;
+  --radius: 12px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background: var(--bg-dark);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  width: 320px;
+  padding: 2rem 2.5rem;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+/* ----- Inputs ----- */
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-top: 0.8rem;
+  border: none;
+  border-radius: var(--radius);
+  background: #1e1e1e;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+/* ----- Knapper ----- */
+button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  margin-top: 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s;
+}
+
+/* login-knap */
+.btn-login {
+  background: var(--purple);
+}
+.btn-login:hover {
+  background: var(--purple-hover);
+  transform: translateY(-2px);
+}
+
+/* vis-snacks-knap */
+.btn-action {
+  background: var(--orange);
+}
+.btn-action:hover {
+  background: var(--orange-hover);
+  transform: translateY(-2px);
+}
+
+/* ----- Snack-liste + animation ----- */
+ul.snack-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1.5rem;
+}
+
+.snack-list li {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: slide-in 0.45s ease forwards;
+}
+
+@keyframes slide-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
