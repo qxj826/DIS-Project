@@ -1,0 +1,16 @@
+CREATE TEMP TABLE food_stage (
+    food text, measure text, grams text,
+    calories text, protein text, fat text,
+    sat_fat text, fiber text, carbs text, category text
+);
+
+\copy food_stage FROM 'data/nutrients_csvfile.csv' CSV HEADER;
+
+INSERT INTO snack(name, calories, grams, protein, carbs)
+SELECT
+  food,
+  NULLIF(NULLIF(regexp_replace(calories, ',|-.+$', '', 'g'), 't'), '')::numeric,
+  NULLIF(NULLIF(regexp_replace(grams   , ',|-.+$', '', 'g'), 't'), '')::numeric,
+  NULLIF(NULLIF(regexp_replace(protein , ',|-.+$', '', 'g'), 't'), '')::numeric,
+  NULLIF(NULLIF(regexp_replace(carbs   , ',|-.+$', '', 'g'), 't'), '')::numeric
+FROM food_stage;

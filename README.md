@@ -1,4 +1,26 @@
-# DIS-Project
+# Snackster database - Get your favorite snack!
+
+# running dis-snackster-project:
+
+This assumes a working Python 3 installation (with python=python3 and pip=pip3).
+
+(1) Install all dependencies by running
+$ pip install -r requirements.txt
+
+(2)
+run the sql 
+$ psql snackster_dev -f app/seed_food.sql
+
+(3)
+run the app
+$ python3 -m flask run
+
+
+
+
+
+
+Til os ___________________________________________________________________________
 
 How to start the project
 1 Start PostgreSQL
@@ -7,6 +29,9 @@ Launch Postgres.app	Menu-bar icon turns green = local PostgreSQL running on port
 (first run only) createdev DB	
     createdb snackster_dev
 
+
+To load the data
+psql snackster_dev -f db/seed_food.sql      # copies data/nutrition_facts.csv
 
 
 
