@@ -28,12 +28,12 @@ body {
   justify-content: center;
 }
 
-.card {
-  width: 320px;
-  padding: 2rem 2.5rem;
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+.card {                           /* existing rule in base.html <style> */
+  background:#141414;
+  padding:2rem 3rem;
+  border-radius:12px;
+  min-width:320px;
+  max-width:520px;              /* NEW – keeps search row inside box */
 }
 
 h1,
@@ -107,3 +107,15 @@ ul.snack-list {
     transform: translateY(0);
   }
 }
+.center-form input, .center-form button{width:100%;margin-top:.6rem}
+.search-bar {                     
+  display:flex;
+  gap:.6rem;
+  margin:1rem 0;
+  align-items:center;          
+}
+.btn-green{background:#2d8d4c;padding:.5rem 1rem;color:#fff;border-radius:8px;text-decoration:none}
+.snack-table{width:100%;border-collapse:collapse;text-align:center}
+.snack-table th{background:#222;padding:.5rem}
+.snack-table td{background:#1b1b1b;padding:.5rem}
+.snack-table .name{text-align:left}.snack-table .serv{font-size:.8em;color:#888}

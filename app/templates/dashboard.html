@@ -6,24 +6,52 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
-    <div class="card">
-      <h2>Hej {{ user.username }}!</h2>
-      <form method="post">
-        <label>
-          Indtast kalorier forbrændt:
-          <input type="number" name="calories" min="1" required />
-        </label>
-        <button type="submit" class="btn-action">Vis snacks</button>
+    {% extends "base.html" %}{% block content %}
+    <h2>Hej {{ user.username }}!</h2>
+    
+    {% if not cal_limit %}
+      <form method="post" class="center-form">
+          <label>Indtast kalorier forbrændt:</label>
+          <input type="number" name="calories" min="1" required>
+          <button class="btn-action">Vis snacks</button>
       </form>
+    {% else %}
+      <form method="get" action="{{ url_for('dashboard') }}" class="search-bar">
+          <input name="q" value="{{ search }}" placeholder="Søg snack…">
+          <button>Search</button>
+          <a class="btn-green" href="{{ url_for('add_snack') }}">+ Add snack</a>
+      </form>
+      {% include "snack_table.html" %}
+    {% endif %}
+    
+    <p style="text-align:center"><a href="{{ url_for('logout') }}">Log ud</a></p>
+    {% endblock %}
 
-      {% if snacks is defined %}
-        <h3>Forslag:</h3>
-        <ul class="snack-list">
-          {% for s in snacks %}
-            <li>{{ s.name }} – {{ s.calories }} kcal</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
+      {% if snacks %}         
+  <form method="get" action="{{ url_for('dashboard_search') }}" style="display:flex; gap:8px; margin-bottom:1rem">
+    <input type="text"   name="q" placeholder="Søg snack…" value="{{ search|default('') }}"
+           style="flex:1; padding:0.5rem 0.8rem; border-radius:8px; border:none; background:#1e1e1e; color:#fff">
+    <button type="submit" style="padding:0.5rem 1rem; background:#4c2a86; border:none; border-radius:8px; color:#fff">
+      Search
+    </button>
+    <a href="{{ url_for('add_snack') }}"
+       style="padding:0.5rem 1rem; background:#2d8d4c; border-radius:8px; color:#fff; text-decoration:none">
+       + Add snack
+    </a>
+  </form>
+{% else %}              
+  <form method="post">
+    <label>
+      Indtast kalorier forbrændt:
+      <input type="number" name="calories" min="1" required />
+    </label>
+    <button type="submit" class="btn-action">Vis snacks</button>
+  </form>
+{% endif %}
+
+
+    
+
 
       <p style="text-align:center; margin-top:2rem">
         <a href="{{ url_for('logout') }}" style="color:#bbb">Log ud</a>

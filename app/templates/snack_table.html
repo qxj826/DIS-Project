@@ -1,0 +1,22 @@
+{% if snacks %}
+<div style="overflow-x:auto">
+<table class="snack-table">
+  <thead><tr>
+    <th>Snack</th><th>Portion&nbsp;(g)</th><th>kcal</th>
+    <th>Protein&nbsp;(g)</th><th>Carbs&nbsp;(g)</th>
+  </tr></thead>
+  <tbody>
+    {% for s in snacks %}
+      <tr>
+        <td class="name">{{ s.name }}
+            <span class="serv">{{ s.servings|round|int }} serv</span></td>
+        <td>{{ s.grams|round|int }}</td>
+        <td>{{ s.calories|round|int }}</td>
+        <td>{{ s.protein|round|int }}</td>
+        <td>{{ s.carbs|round|int }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endif %}

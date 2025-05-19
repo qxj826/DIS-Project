@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <title>Snackster</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body{display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:sans-serif}
+    .card{background:#141414;padding:2rem 3rem;border-radius:12px;min-width:320px}
+    .center-form input,.center-form button{width:100%;margin-top:.6rem}
+    .search-bar{display:flex;gap:.6rem;margin:1rem 0}
+    .btn-action{background:#ff7a00;border:none;padding:.7rem;border-radius:8px;color:#000;font-weight:bold}
+    .btn-green{background:#2d8d4c;padding:.5rem 1rem;color:#fff;border-radius:8px;text-decoration:none}
+    .snack-table{width:100%;border-collapse:collapse;text-align:center}
+    .snack-table th{background:#222;padding:.5rem}
+    .snack-table td{background:#1b1b1b;padding:.5rem}
+    .snack-table .name{text-align:left}.snack-table .serv{font-size:.8em;color:#888}
+  </style>
+</head>
+<body>
+  <div class="card">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>
