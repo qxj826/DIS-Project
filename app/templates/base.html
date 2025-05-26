@@ -5,20 +5,41 @@
   <title>Snackster</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
-    body{display:flex;justify-content:center;align-items:center;height:100vh;background:#000;color:#fff;font-family:sans-serif}
-    .card{background:#141414;padding:2rem 3rem;border-radius:12px;min-width:320px}
+    /* --- layout ------------------------------------------------ */
+    body{display:flex;justify-content:center;align-items:center;height:100vh;
+         background:#000;color:#fff;font-family:sans-serif}
+    .card{background:#141414;padding:2rem 3rem;border-radius:12px;
+          min-width:320px;max-width:520px}
+
+    /* --- nav bar ---------------------------------------------- */
+    .top-nav{display:flex;gap:2rem;margin-bottom:1.2rem}
+    .top-nav a{color:#fff;text-decoration:none;font-weight:bold}
+    .top-nav a:hover{text-decoration:underline}
+
+    /* --- form + table tweaks ---------------------------------- */
     .center-form input,.center-form button{width:100%;margin-top:.6rem}
-    .search-bar{display:flex;gap:.6rem;margin:1rem 0}
-    .btn-action{background:#ff7a00;border:none;padding:.7rem;border-radius:8px;color:#000;font-weight:bold}
-    .btn-green{background:#2d8d4c;padding:.5rem 1rem;color:#fff;border-radius:8px;text-decoration:none}
+    .search-bar{display:flex;gap:.6rem;margin:1rem 0;align-items:center}
+    .btn-action{background:#ff7a00;border:none;padding:.7rem;border-radius:8px;
+                color:#000;font-weight:bold;cursor:pointer}
+    .btn-green{background:#2d8d4c;padding:.5rem 1rem;color:#fff;border-radius:8px;
+               text-decoration:none}
     .snack-table{width:100%;border-collapse:collapse;text-align:center}
     .snack-table th{background:#222;padding:.5rem}
     .snack-table td{background:#1b1b1b;padding:.5rem}
-    .snack-table .name{text-align:left}.snack-table .serv{font-size:.8em;color:#888}
+    .snack-table .name{text-align:left}
+    .snack-table .serv{font-size:.8em;color:#888}
   </style>
 </head>
 <body>
   <div class="card">
+    <!-- navigation bar -->
+    <nav class="top-nav">
+      <a href="{{ url_for('dashboard') }}">Home</a>
+      <a href="{{ url_for('favorites') }}">Favorites</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="{{ url_for('logout') }}">Log ud</a>
+    </nav>
+
     {% block content %}{% endblock %}
   </div>
 </body>

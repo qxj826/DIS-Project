@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Mine favoritter</h2>
+
+{% include "snack_table.html" %}
+
+{% if not snacks %}
+  <p>Du har ingen favoritter endnu.</p>
+{% endif %}
+{% endblock %}

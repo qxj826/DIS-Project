@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block content %}
+<h2>Profil</h2>
+{% if error %}<p style="color:red">{{ error }}</p>{% endif %}
+<form method="post">
+  <label>Brugernavn <input name="username" value="{{ user.username }}" required></label><br>
+  <label>Fulde navn <input name="fullname" value="{{ user.fullname or '' }}"></label><br>
+  <label>Email <input name="email" value="{{ user.email or '' }}"></label><br>
+  <button style="margin-top:1rem">Gem</button>
+</form>
+<p style="text-align:center;margin-top:1rem">
+  <a href="{{ url_for('dashboard') }}">← Tilbage</a>
+</p>
+{% endblock %}
