@@ -7,8 +7,7 @@ CREATE TABLE IF NOT EXISTS snack (
     carbs    numeric
 );
 
--- Add UNIQUE constraint if missing
-DO $$
+
 BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM pg_constraint
@@ -18,4 +17,4 @@ BEGIN
           ADD CONSTRAINT snack_name_cal_unique
           UNIQUE (name, calories);
     END IF;
-END $$;
+END;

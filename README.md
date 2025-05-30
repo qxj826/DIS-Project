@@ -9,11 +9,14 @@ $ pip install -r requirements.txt
 
 (2)
 run the sql 
+$ psql -d snackster_dev -f app/schema.sql
+$ psql -d snackster_dev -f app/snack_only.sql
+$ psql -d snackster_dev -f app/upgrade_01_users_favs.sql
 $ psql snackster_dev -f app/seed_food.sql
 
 (3)
 run the app
-$ python3 -m flask run
+$ python -m flask --app app.app run
 
 
 

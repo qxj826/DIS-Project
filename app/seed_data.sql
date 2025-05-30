@@ -1,10 +1,8 @@
 BEGIN;
 
--- Clear tables
 TRUNCATE favourite, snack
         RESTART IDENTITY CASCADE;
 
--- staging + load
 CREATE TEMP TABLE food_stage (
     food      text,
     measure   text,
@@ -20,7 +18,6 @@ CREATE TEMP TABLE food_stage (
 
 \copy food_stage FROM 'data/nutrients_csvfile.csv' CSV HEADER;
 
--- insert
 INSERT INTO snack (name, calories, grams, protein, carbs)
 SELECT
     food,
