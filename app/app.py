@@ -110,6 +110,10 @@ def dashboard():
     user = _current_user()
     if not user:
         return redirect(url_for("login"))
+    # Reset limits if "reset" query parameter is present
+    if request.args.get("reset"):
+        session.pop("limits", None)
+        return redirect(url_for("dashboard"))
 
     # ------------------------------------------------------------------
     # 1) helpers we always need
@@ -121,23 +125,26 @@ def dashboard():
     limits = session.get("limits")        # may be None
 
     if request.method == "POST":
-        # raw strings; convert to None when empty
-        cal_raw = request.form.get("calories") or None
-        pro_raw = request.form.get("protein")  or None
-        car_raw = request.form.get("carbs")    or None
+        # Get raw input values
+        cal_min_raw = request.form.get("calories_min") or None
+        cal_max_raw = request.form.get("calories_max") or None
+        pro_min_raw = request.form.get("protein_min") or None
+        pro_max_raw = request.form.get("protein_max") or None
+        car_min_raw = request.form.get("carbs_min") or None
+        car_max_raw = request.form.get("carbs_max") or None
 
-        if not (cal_raw or pro_raw or car_raw):
-            return render_template("dashboard.html",
-                                   user=user, limits=None,
-                                   error="Angiv mindst ét tal")
-
+        # Convert to integers or None
         limits = dict(
-            cal=int(cal_raw) if cal_raw else None,
-            pro=int(pro_raw) if pro_raw else None,
-            car=int(car_raw) if car_raw else None
+            cal_min=int(cal_min_raw) if cal_min_raw else None,
+            cal_max=int(cal_max_raw) if cal_max_raw else None,
+            pro_min=int(pro_min_raw) if pro_min_raw else None,
+            pro_max=int(pro_max_raw) if pro_max_raw else None,
+            car_min=int(car_min_raw) if car_min_raw else None,
+            car_max=int(car_max_raw) if car_max_raw else None,
         )
         session["limits"] = limits
         return redirect(url_for("dashboard"))
+
 
     # “Reset” back to the form
     if request.args.get("reset"):
@@ -151,13 +158,18 @@ def dashboard():
 
     if limits:
         qry = Snack.query
-        if limits["cal"] is not None:
-            qry = qry.filter(Snack.calories > 0,
-                             Snack.calories <= limits["cal"])
-        if limits["pro"] is not None:
-            qry = qry.filter(Snack.protein <= limits["pro"])
-        if limits["car"] is not None:
-            qry = qry.filter(Snack.carbs   <= limits["car"])
+        if limits["cal_min"] is not None:
+            qry = qry.filter(Snack.calories >= limits["cal_min"])
+        if limits["cal_max"] is not None:
+            qry = qry.filter(Snack.calories <= limits["cal_max"])
+        if limits["pro_min"] is not None:
+            qry = qry.filter(Snack.protein >= limits["pro_min"])
+        if limits["pro_max"] is not None:
+            qry = qry.filter(Snack.protein <= limits["pro_max"])
+        if limits["car_min"] is not None:
+            qry = qry.filter(Snack.carbs >= limits["car_min"])
+        if limits["car_max"] is not None:
+            qry = qry.filter(Snack.carbs <= limits["car_max"])
         if q:
             qry = qry.filter(Snack.name.ilike(f"%{q}%"))
 
@@ -171,10 +183,10 @@ def dashboard():
                 continue
             seen_names.add(key)
 
-            if limits["cal"] is None or not r.calories or float(r.calories) == 0:
-                snacks.append(_row(r, 1))                      # 1 serving
+            if not r.calories or float(r.calories) == 0:
+                snacks.append(_row(r, 1))  # 1 serving
             else:
-                servings = int(limits["cal"] // float(r.calories))
+                servings = int(limits["cal_min"] // float(r.calories)) if limits["cal_min"] else 1
                 if servings:
                     snacks.append(_row(r, servings))
 

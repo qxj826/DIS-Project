@@ -4,17 +4,26 @@
 {% if not limits %}
   <!-- front page : any of the three fields may be filled -->
   <form method="post" class="center-form">
-    <label>Kalorier-maks:</label>
-    <input type="number" name="calories" min="1" placeholder="kcal">
+  <label>Kalorier-min:</label>
+  <input type="number" name="calories_min" min="0" placeholder="Min kcal">
 
-    <label style="margin-top:.8rem">Protein-maks (valgfrit):</label>
-    <input type="number" name="protein" min="0" placeholder="gram">
+  <label>Kalorier-maks:</label>
+  <input type="number" name="calories_max" min="0" placeholder="Max kcal">
 
-    <label style="margin-top:.8rem">Kulhydrat-maks (valgfrit):</label>
-    <input type="number" name="carbs" min="0" placeholder="gram">
+  <label>Protein-min:</label>
+  <input type="number" name="protein_min" min="0" placeholder="Min gram">
 
-    <button class="btn-action" style="margin-top:1rem">Vis snacks</button>
-  </form>
+  <label>Protein-maks:</label>
+  <input type="number" name="protein_max" min="0" placeholder="Max gram">
+
+  <label>Kulhydrat-min:</label>
+  <input type="number" name="carbs_min" min="0" placeholder="Min gram">
+
+  <label>Kulhydrat-maks:</label>
+  <input type="number" name="carbs_max" min="0" placeholder="Max gram">
+
+  <button class="btn-action" style="margin-top:1rem">Vis snacks</button>
+</form>
 
 {% else %}
   <!-- once limits exist, show search bar -->

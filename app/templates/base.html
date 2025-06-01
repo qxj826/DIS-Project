@@ -34,7 +34,7 @@
   <div class="card">
     <!-- navigation bar -->
     <nav class="top-nav">
-      <a href="{{ url_for('dashboard') }}">Home</a>
+      <a href="{{ url_for('dashboard', reset=True) }}">Home</a>
       <a href="{{ url_for('favorites') }}">Favorites</a>
       <a href="{{ url_for('profile') }}">Profile</a>
       <a href="{{ url_for('logout') }}">Log ud</a>
